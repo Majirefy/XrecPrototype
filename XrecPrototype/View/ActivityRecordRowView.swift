@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivityRecordRowView: View {
     @Bindable var activity: Activity
     
-    @ScaledMetric private var lableWidth = 20
+    @ScaledMetric private var lableWidth = 10
     @ScaledMetric private var labelHeight = 100
     @ScaledMetric private var durationFontSize = 60
     
@@ -39,9 +39,9 @@ struct ActivityRecordRowView: View {
             }
             .padding(.horizontal)
         }
-        .clipShape(RoundedRectangle(cornerRadius: lableWidth / 2, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: lableWidth / 2))
         .overlay {
-            RoundedRectangle(cornerRadius: lableWidth / 2, style: .continuous)
+            RoundedRectangle(cornerRadius: lableWidth / 2)
                 .stroke(activity.activityType.color, lineWidth: 2)
         }
     }
