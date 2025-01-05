@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  HomeView.swift
 //  XrecPrototype
 //
 //  Created by Majirefy on 2024/12/24.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct HomeView: View {
     var body: some View {
-        VStack {
+        NavigationStack {
             WeeklyCalendarView()
+                .navigationTitle("Xrec")
         }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    HomeView()
 }

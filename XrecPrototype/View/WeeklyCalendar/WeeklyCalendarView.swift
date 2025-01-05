@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct WeeklyCalendarView: View {
+    @State private var currentDate = Date.now
+    @State private var selectedDate: Date = Date.now
+    
+    
     @ScaledMetric private var selectedCircleSize = 40
     @ScaledMetric private var badgeCircleSize = 20
     @ScaledMetric private var badgeOffset = 15
-    
-    @State private var currentDate = Date.now
     
     private let dateFormatter: DateFormatter = DateFormatter()
     
@@ -26,19 +28,28 @@ struct WeeklyCalendarView: View {
         VStack {
             HStack {
                 ForEach(Date.weekDates(for: currentDate), id: \.self) { date in
-                    WeeklyCalendarDayView(date: date, badgeNumber: 3)
+                    Spacer()
+                    WeeklyCalendarDayView(date: date, badgeNumber: 3, isSelected: Calendar.current.isDate(selectedDate, inSameDayAs: date))
+                        .onTapGesture {
+                            withAnimation {
+                                selectedDate = date
+                            }
+                        }
+                    Spacer()
                 }
             }
             .gesture(
                 DragGesture(minimumDistance: 50, coordinateSpace: .local)
                     .onEnded({ value in
-                        if value.translation.width < 0 {
-                            withAnimation {
-                                changeWeek(by: 1)
-                            }
-                        } else if value.translation.width > 0 {
-                            withAnimation {
-                                changeWeek(by: -1)
+                        if abs(value.translation.width) > abs(value.translation.height) {
+                            if value.translation.width < 0 {
+                                withAnimation {
+                                    changeWeek(by: 1)
+                                }
+                            } else if value.translation.width > 0 {
+                                withAnimation {
+                                    changeWeek(by: -1)
+                                }
                             }
                         }
                     })

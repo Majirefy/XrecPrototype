@@ -26,8 +26,4 @@ extension Date {
         guard let startOfWeek = date.startOfWeek else { return [] }
         return (0..<7).compactMap { Calendar.current.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
-    
-    static func isToday(_ date: Date) -> Bool {
-        Calendar.current.isDate(date, inSameDayAs: Date.now)
-    }
 }

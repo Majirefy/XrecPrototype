@@ -10,6 +10,7 @@ import SwiftUI
 struct WeeklyCalendarDayView: View {
     var date: Date
     var badgeNumber: Int = 0
+    var isSelected: Bool = false
     
     @ScaledMetric private var selectedCircleSize = 40
     @ScaledMetric private var badgeCircleSize = 20
@@ -19,7 +20,6 @@ struct WeeklyCalendarDayView: View {
     
     var body: some View {
         HStack {
-            Spacer()
             VStack(alignment: .center) {
                 Text(dateFormatter.veryShortWeekdaySymbol(for: date))
                     .font(.caption)
@@ -27,10 +27,10 @@ struct WeeklyCalendarDayView: View {
                 Text(dateFormatter.dayNumber(for: date))
                     .font(.title2)
                     .fontDesign(.rounded)
-                    .fontWeight(Date.isToday(date) ? .bold : .regular)
-                    .foregroundStyle(Date.isToday(date) ? .white : .primary)
+                    .fontWeight(Calendar.current.isDateInToday(date) ? .bold : .regular)
+                    .foregroundStyle(dayNumberForeground(for: date))
                     .frame(width: selectedCircleSize, height: selectedCircleSize)
-                    .background(Date.isToday(date) ? Color.accentColor : .clear)
+                    .background(dayNumberBackgroud(for: date))
                     .clipShape(Circle())
                     .overlay {
                         if badgeNumber > 0 {
@@ -46,11 +46,29 @@ struct WeeklyCalendarDayView: View {
                         }
                     }
             }
-            Spacer()
         }
+    }
+    
+    private func dayNumberBackgroud(for date: Date) -> Color {
+        if isSelected {
+            if Calendar.current.isDateInToday(date) {
+                return .accent
+            }
+            return .pink
+        }
+        return .clear
+    }
+    
+    private func dayNumberForeground(for date: Date) -> Color {
+        if isSelected && Calendar.current.isDateInToday(date) {
+            return .white
+        } else if isSelected {
+            return .white
+        }
+        return .primary
     }
 }
 
 #Preview {
-    WeeklyCalendarDayView(date: Date.now, badgeNumber: 3)
+    WeeklyCalendarDayView(date: Date.now, badgeNumber: 3, isSelected: true)
 }
